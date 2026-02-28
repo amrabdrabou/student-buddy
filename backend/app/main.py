@@ -11,9 +11,9 @@ async def lifespan(app: FastAPI):
         await conn.execute(text("SELECT 1"))
 
     print("Database connected")
-    
+
     yield
-    
+
     await engine.dispose()
     print("Database connection closed")
 
@@ -24,6 +24,10 @@ app = FastAPI(
     description="AI-Powered Study Assistant",
     version="1.0.0",
 )
+
+from app.api.v1 import api_router  # noqa: E402
+app.include_router(api_router)
+
 
 @app.get("/info")
 def info(settings: Settings = Depends(get_settings)):
