@@ -7,8 +7,8 @@ from typing import Any, Dict, List, Optional, TYPE_CHECKING
 
 from sqlalchemy import DateTime, ForeignKey, Integer, Numeric, String, Text, func
 from sqlalchemy.dialects.postgresql import ARRAY, JSONB
+from sqlalchemy.dialects.postgresql import UUID as PG_UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from pgvector.sqlalchemy import Vector
 
 from app.core.db_setup import Base
 
@@ -28,9 +28,9 @@ class AiMessageContext(Base):
     retrieval_method: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     context_summary: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     key_entities: Mapped[Optional[Dict[str, Any]]] = mapped_column(JSONB, nullable=True)
-    context_embedding: Mapped[Optional[List[float]]] = mapped_column(Vector, nullable=True)
-    source_notes: Mapped[Optional[List[uuid.UUID]]] = mapped_column(ARRAY(ForeignKey("notes.id")), nullable=True)
-    source_documents: Mapped[Optional[List[uuid.UUID]]] = mapped_column(ARRAY(ForeignKey("documents.id")), nullable=True)
+    context_embedding: Mapped[Optional[list]] = mapped_column(JSONB, nullable=True)
+    source_notes: Mapped[Optional[List[uuid.UUID]]] = mapped_column(ARRAY(PG_UUID(as_uuid=True)), nullable=True)
+    source_documents: Mapped[Optional[List[uuid.UUID]]] = mapped_column(ARRAY(PG_UUID(as_uuid=True)), nullable=True)
     tokens_in_context: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
     relevance_score: Mapped[Optional[Decimal]] = mapped_column(Numeric, nullable=True)
     created_at: Mapped[datetime] = mapped_column(

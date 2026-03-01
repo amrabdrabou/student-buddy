@@ -4,7 +4,7 @@ import os
 
 class Settings(BaseSettings):
     environment: str = "dev"
-    database_url: str = ""
+    DATABASE_URL: str = ""
     debug: bool = False
     secret_key: str = ""
     model_config = SettingsConfigDict(

@@ -2,11 +2,11 @@ from __future__ import annotations
 
 import uuid
 from datetime import datetime
-from typing import List, Optional, TYPE_CHECKING
+from typing import Optional, TYPE_CHECKING
 
 from sqlalchemy import DateTime, ForeignKey, Integer, String, Text, func
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from pgvector.sqlalchemy import Vector
 
 from app.core.db_setup import Base
 
@@ -27,7 +27,7 @@ class EmbeddingVector(Base):
     user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"), nullable=False)
     content_text: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     content_hash: Mapped[Optional[str]] = mapped_column(String, nullable=True)
-    embedding: Mapped[Optional[List[float]]] = mapped_column(Vector, nullable=True)
+    embedding: Mapped[Optional[list]] = mapped_column(JSONB, nullable=True)
     embedding_model: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     subject_id: Mapped[Optional[uuid.UUID]] = mapped_column(ForeignKey("study_subjects.id"), nullable=True)
     content_type: Mapped[Optional[str]] = mapped_column(String, nullable=True)
